@@ -1,0 +1,141 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 11.5
+-- Dumped by pg_dump version 11.5
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: business_units; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.business_units (
+    id integer NOT NULL,
+    identifier character varying(50),
+    name character varying(200),
+    parent_id integer
+);
+
+
+--
+-- Name: projects; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.projects (
+    id integer NOT NULL,
+    identifier character varying(50),
+    name character varying(200),
+    priority integer,
+    start_date timestamp without time zone,
+    end_date timestamp without time zone,
+    description character varying(2000),
+    bu_id integer
+);
+
+
+--
+-- Data for Name: business_units; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.business_units (id, identifier, name, parent_id) FROM stdin;
+1	1	unit1	1
+2	2	unit2	2
+3	3	unit3	1
+4	4	unit4	2
+5	5	unit5	4
+\.
+
+
+--
+-- Data for Name: projects; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.projects (id, identifier, name, priority, start_date, end_date, description, bu_id) FROM stdin;
+1	6	project1	3	2016-01-08 04:05:06	2018-04-08 05:05:07	descr 1	2
+2	7	project2	4	2019-01-08 04:03:06	\N	descr 2	1
+3	8	project3	1	2020-06-08 06:03:06	\N	descr 3	1
+4	9	project4	2	2017-05-08 06:03:04	2019-03-04 01:02:03	descr 4	1
+5	a	project5	3	2020-03-10 04:12:15	\N	descr 5	2
+6	b	project6	2	2018-07-11 06:12:10	\N	descr 6	3
+7	c	project7	4	2017-02-12 06:02:02	2020-01-01 00:02:03	descr 7	4
+8	d	project8	1	2020-07-17 06:02:02	\N	descr 8	5
+\.
+
+
+--
+-- Name: business_units business_units_identifier_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.business_units
+    ADD CONSTRAINT business_units_identifier_key UNIQUE (identifier);
+
+
+--
+-- Name: business_units business_units_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.business_units
+    ADD CONSTRAINT business_units_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: projects projects_identifier_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.projects
+    ADD CONSTRAINT projects_identifier_key UNIQUE (identifier);
+
+
+--
+-- Name: projects projects_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.projects
+    ADD CONSTRAINT projects_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: business_units business_units_parent_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.business_units
+    ADD CONSTRAINT business_units_parent_id_fkey FOREIGN KEY (parent_id) REFERENCES public.business_units(id);
+
+
+--
+-- Name: projects projects_bu_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.projects
+    ADD CONSTRAINT projects_bu_id_fkey FOREIGN KEY (bu_id) REFERENCES public.business_units(id);
+
+
+--
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: -
+--
+
+REVOKE ALL ON SCHEMA public FROM cloudsqladmin;
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+GRANT ALL ON SCHEMA public TO cloudsqlsuperuser;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

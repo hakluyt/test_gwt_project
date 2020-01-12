@@ -1,0 +1,2 @@
+serviceClass: projectVisualiser.client.service.DBOperationService
+path: F8F18FA5F525607A88DCFBA840BDC9F5.gwt.rpc
